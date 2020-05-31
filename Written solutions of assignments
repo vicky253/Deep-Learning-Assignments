@@ -1,0 +1,39 @@
+
+Tuning CNN parameters - Solutions: 
+
+1.	Changing stride has the most effect on total number of model parameters, but cannot get the same test performance when change stride only. 
+When change kernel size and filter, I can get similar test performance with fewer parameters.
+2.	When decrease kernel size, result in output shape increase
+When increase stride, result in output shape decrease
+When change padding from “valid” (no zero pad) to “same” (input image has zero pad), output shape increase.
+3.	I changed filter to 9, kernel to (8,8) and padding to “same”, I got test accuracy of 0.945.
+
+Transer Learning MobileNet Layers - Solutions:
+
+Exercise 1 
+1.	Due to overfitting, there is big difference between training and test accuracy
+2.	we need regularization and dropout to reduce overfitting problem, because of overfitting problem, the model fits good on training data set but perform bad on test set. 
+
+Exercise 2 
+1.	if not use GlobalAveragePooling2D layer, there will be overfitting problem. GlobalAveragePooling takes a Kernel Size and gives you the Average val, then move by the Stride value. It changes dimension H*W*C to 1*1*C. performance changed because of dimension reduction.
+2.	When create a batch of images, we need additional dimension. The preprocess_input function is meant to adequate your image to the format the model requires. Or say normalization, model will be bettering in generalization. If omit this step, the precision will decrease and will run with error. 
+3.	We need to resize image by increasing its size from 32*32*3 to 224*224*3 to make image bigger and smoother for better identification and to see more deails. If not resize images, precision will decrease.
+
+Exercise 3 
+1.	Because there are more parameters in exercise 3 compared with exercise 2, so that the network trains slowly. 
+2.	The accuracy of both training and test of exercise 2 is higher than that of exercise 3. Exercise 2 train non-CNN layers (FC), leave others frozen, while Exercise 3 train some layers (CNN + FC), leave others frozen. 
+3.	 if we wanted to train some of the MobileNet layers, change layer.trainable = False to change layer.trainable = True. 
+
+
+Hotdog / not hotdog - Detection Solutions:
+Change 1:
+I used pretrained model- MobileNet with weight = imagenet. And train some layers(CNN+FC), leave others frozen. It helped with model training on small sample size. Result in better prediction, lower loss, much higher accuracy.
+
+Change 2:
+I used preprocess_input, which normalize the images. Result in better model generalization, better prediction, lower loss, and higher accuracy.
+
+Change 3:
+I used l2 regularization with 0.2 and dropout 20% of neurons which help with solving overfitting problem. And I increased the batch size to 64, increased epochs to 20. They result in better prediction, lower loss, and higher accuracy.
+
+Finally got accuracy of 0.8326.
+
